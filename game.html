@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fruit Quiz Game</title>
+  <!-- Add Bootstrap 5 CSS (for reset button and responsive styling) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  
+  <style>
+    /* Add background image to the body */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-image: url('images/bg5.png'); /* Add your background image path here */
+      background-size: cover; /* Ensures the image covers the entire screen */
+      background-position: center center; /* Centers the image */
+      background-attachment: fixed; /* Keeps the background fixed while scrolling */
+      height: 100vh; /* Full viewport height */
+    }
+
+    #question {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      font-size: 24px;
+      font-weight: bold;
+      color: #f8d80e;
+      z-index: 10;
+    }
+
+    #score {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      font-size: 18px;
+      color:  #f8d80e;
+      z-index: 10;
+    }
+
+    #user-info {
+      position: absolute;
+      top: 100px;
+      left: 20px;
+      font-size: 18px;
+      color: #f8d80e;
+      z-index: 10;
+    }
+
+    .fruit-container {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1s ease, top 1s ease, left 1s ease; /* Adjust transition */
+    }
+
+    .fruit-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 50%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+
+    .fruit-text {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #f8d80e;
+    }
+
+    /* For Fruit Slice Effect */
+    .fruit-container {
+      position: absolute;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    /* Slice effect when the fruit is hovered */
+    .fruit-container.sliced {
+      animation: sliceEffect 0.5s forwards;
+    }
+
+    /* Break the fruit into pieces with pop effect */
+    @keyframes sliceEffect {
+      0% {
+        transform: scale(1); /* No scaling initially */
+        opacity: 1;
+      }
+      50% {
+        transform: scale(0.5); /* Shrink the fruit */
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(0); /* Shrink more and disappear */
+        opacity: 0;
+      }
+    }
+
+    /* Creating "ball" pieces when the fruit is sliced */
+    .fruit-container.sliced::after,
+    .fruit-container.sliced::before {
+      content: '';
+      position: absolute;
+      background-color: #f8d80e;
+      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      animation: popEffect 1s forwards;
+      opacity: 1;
+    }
+
+    @keyframes popEffect {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: translate(50px, -50px) scale(0.7); /* Random movement */
+        opacity: 0.8;
+      }
+      100% {
+        transform: translate(150px, -200px) scale(0.3); /* Pop away */
+        opacity: 0;
+      }
+    }
+
+    /* Reset button styling */
+    .reset-btn {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .reset-btn:hover {
+      background-color: #cc0000;
+    }
+
+    /* Exit button styling */
+    .exit-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .exit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .circle{
+      height: 24px;
+      width: 24px;
+      border-radius: 24px;
+      background-color: black;
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 99999999;
+
+    }
+
+    
+
+  </style>
+</head>
+<body>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  <div class ="circle"></div>
+  
+    
+  
+  <div id="question">Question will appear here</div>
+  <div id="score">Score: 0</div>
+  <div id="user-info">
+    <p><strong>Username:</strong> <span id="username-display"></span></p>
+    <p><strong>College:</strong> <span id="college-display"></span></p>
+  </div>
+
+  <!-- Fruit containers -->
+  <div class="fruit-container" id="fruit1">
+    <img src="images/apple.jpeg" alt="Apple">
+    <div class="fruit-text">Option 1</div>
+  </div>
+  <div class="fruit-container" id="fruit2">
+    <img src="images/orange.jpeg" alt="Orange">
+    <div class="fruit-text">Option 2</div>
+  </div>
+  <div class="fruit-container" id="fruit3">
+    <img src="images/watermelon.jpeg" alt="Watermelon">
+    <div class="fruit-text">Option 3</div>
+  </div>
+
+  <!-- Reset Button -->
+  <button class="reset-btn" onclick="resetGame()">Reset Game</button>
+
+  <!-- Exit Button -->
+  <button class="exit-btn" onclick="exitGame()">Exit to Login</button>
+
+  <script src="controller.js"></script>
+
+  <script>
+    // Fetch username and college from localStorage and display them
+    const username = localStorage.getItem('username');
+    const college = localStorage.getItem('college');
+
+    // Display the retrieved information
+    document.getElementById('username-display').textContent = username ? username : 'Not set';
+    document.getElementById('college-display').textContent = college ? college : 'Not set';
+
+    // Reset the game (clear localStorage and reload)
+    function resetGame() {
+      localStorage.removeItem('username');
+      localStorage.removeItem('college');
+      window.location.reload(); // Reload the page to restart
+    }
+
+    // Redirect to the login page
+    function exitGame() {
+      localStorage.removeItem('username');
+      localStorage.removeItem('college');
+      window.location.href = "index.html"; // Redirect to the login page
+    }
+  </script>
+  
+</body>
+</html>
