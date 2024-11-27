@@ -59,14 +59,15 @@
     }
 
     .fruit-container img {
-      width: 100%;
+      width: 120%;
       height: auto;
-      border-radius: 50%;
+      
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
       cursor: pointer;
     }
 
     .fruit-text {
+      width: 100px;
       margin-top: 10px;
       font-size: 18px;
       font-weight: bold;
@@ -180,6 +181,181 @@
 
     }
 
+    /* Game Over Modal Styles */
+    .game-over-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeIn 0.5s ease-in-out; /* Smooth fade-in animation */
+    }
+
+    /* Modal Content */
+    .modal-content {
+      background: linear-gradient(135deg, #ff7f50, #ff1493); /* Gradient background */
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      width: 75%; /* Slightly increased width */
+      max-width: 650px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Soft shadow */
+      animation: slideUp 0.5s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between; /* Space out elements evenly */
+    }
+
+    /* Modal Heading */
+    h2 {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 20px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    /* Final Score */
+    #final-score {
+      font-size: 1.5rem;
+      color: #fffae6;
+      margin-bottom: 20px;
+    }
+
+    /* Answer List */
+    #correct-answers-list {
+      text-align: left;
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #fff;
+      width: 100%;
+      max-height: 200px; /* Limit height of list */
+      overflow-y: auto; /* Allow scrolling */
+      margin-bottom: 40px; /* Increased space below the list */
+    }
+
+    #correct-answers-list li {
+      margin: 5px 0;
+      padding: 8px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Buttons */
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px; /* Added space between buttons */
+      margin-top: 20px; /* Space above buttons */
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+    /* Reset Button */
+    button.reset-btn {
+      background-color: #4caf50; /* Green */
+      color: white;
+    }
+
+    /* Exit Button */
+    button.exit-btn {
+      background-color: #f44336; /* Red */
+      color: white;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      0% {
+        transform: translateY(50px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (min-width: 768px) {
+      button {
+        margin: 10px; /* Ensure proper spacing between buttons on larger screens */
+      }
+    }
+
+
+    #bomb-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  
+  transform: translate(-50%, -50%);
+  background-color: #ff0000;
+  border: 2px solid black;
+  padding: 20px;
+  color: white;
+  font-size: 20px;
+  z-index: 10;
+  text-align: center;
+}
+
+#game-over-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(14, 13, 13, 0.8);
+  color: rgb(13, 14, 13);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+.flash-effect {
+  animation: flash 0.5s infinite alternate;  /* Adjust the duration for a slower effect */
+}
+
+@keyframes flash {
+  0% {
+    background-color: rgba(255, 99, 71, 0.6); /* Lighter red with some transparency */
+  }
+  100% {
+    background-color: rgba(255, 255, 102, 0.6); /* Lighter yellow with some transparency */
+  }
+}
+
+
+
+
     
 
   </style>
@@ -215,23 +391,62 @@
 
   <!-- Fruit containers -->
   <div class="fruit-container" id="fruit1">
-    <img src="images/apple.jpeg" alt="Apple">
-    <div class="fruit-text">Option 1</div>
+    <img src="images/apple2.png" alt="Apple"> <!-- This img src will change dynamically -->
+    <div class="fruit-text">Option 1</div> <!-- Option text will also change dynamically -->
+</div>
+<div class="fruit-container" id="fruit2">
+    <img src="images/cherry.png" alt="Orange"> <!-- This img src will change dynamically -->
+    <div class="fruit-text">Option 2</div> <!-- Option text will also change dynamically -->
+</div>
+<div class="fruit-container" id="fruit3">
+    <img src="images/strawberry.png" alt="Watermelon"> <!-- This img src will change dynamically -->
+    <div class="fruit-text">Option 3</div> <!-- Option text will also change dynamically -->
+</div>
+
+<!-- The bomb image is displayed initially -->
+<div id="bomb-image-container" style="display: none; position: absolute; width: 100px;">
+  <img src="images/bomb.png" alt="Bomb" id="bomb-image" style="width: 300px; cursor: pointer;" />
+</div>
+
+<!-- Bomb question container (fixed position) -->
+<div id="bomb-container" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+  <div id="bomb">
+    <p>💣 Bomb Activated! Defuse it!</p>
+    <p id="bomb-question"></p>
+    <div id="bomb-options"></div>
+    <p id="bomb-timer"></p>
   </div>
-  <div class="fruit-container" id="fruit2">
-    <img src="images/orange.jpeg" alt="Orange">
-    <div class="fruit-text">Option 2</div>
-  </div>
-  <div class="fruit-container" id="fruit3">
-    <img src="images/watermelon.jpeg" alt="Watermelon">
-    <div class="fruit-text">Option 3</div>
-  </div>
+</div>
+
+<!-- Game over container (hidden initially) -->
+<div id="game-over-container" style="display: none;">
+  <h2 style="color: black;">Game Over!</h2>
+  <p id="correct-answer"></p>
+  <button onclick="exitGame()">Restart</button>
+</div>
+
+
+
 
   <!-- Reset Button -->
-  <button class="reset-btn" onclick="resetGame()">Reset Game</button>
+  <!-- Reset Button -->
+<button id="reset-btn" class="reset-btn" onclick="resetGame()">Reset Game</button>
 
-  <!-- Exit Button -->
-  <button class="exit-btn" onclick="exitGame()">Exit to Login</button>
+<!-- Exit Button -->
+<button id="exit-btn" class="exit-btn" onclick="exitGame()">Exit to Login</button>
+
+<!-- Game Over Modal -->
+<div id="game-over-modal" class="game-over-modal">
+  <div class="modal-content">
+    <h2>Game Over</h2>
+    <p id="final-score">Your Score: 0</p>
+    <ul id="correct-answers-list"></ul>
+    <button class="exit-btn" onclick="exitGame()">Exit to Login</button>
+    <button class="reset-btn" onclick="resetGame()">Reset Game</button>
+  </div>
+</div>
+
+
 
   <script src="controller.js"></script>
 
@@ -246,8 +461,7 @@
 
     // Reset the game (clear localStorage and reload)
     function resetGame() {
-      localStorage.removeItem('username');
-      localStorage.removeItem('college');
+      
       window.location.reload(); // Reload the page to restart
     }
 

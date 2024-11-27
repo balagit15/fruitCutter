@@ -146,27 +146,34 @@
     // Handle form submission and start the game
     document.getElementById('login-form').addEventListener('submit', function(e) {
       e.preventDefault();
-
-      const username = document.getElementById('username').value;
-      const college = document.getElementById('college').value;
-
+  
+      const username = document.getElementById('username').value.trim();
+      const college = document.getElementById('college').value.trim();
+  
       if (username && college) {
         // Save user details in localStorage
         localStorage.setItem('username', username);
         localStorage.setItem('college', college);
-
-        // Redirect to the game page
-        window.location.href = "game.html";
+  
+        // Check if the user is admin
+        if (username.toLowerCase() === "admin" && college.toLowerCase() === "admin") {
+          // Redirect to the admin page
+          window.location.href = "adminPage/admin.html"; // Use relative path for the admin page
+        } else {
+          // Redirect to the game page for regular users
+          window.location.href = "game.html";
+        }
       } else {
         alert("Please enter both your name and college.");
       }
     });
-
+  
     // Unmute audio after page load
     window.addEventListener('load', function() {
       const audioElement = document.getElementById('background-audio');
       audioElement.muted = false; // Unmute the audio after the page is loaded
     });
   </script>
+  
 </body>
 </html>
